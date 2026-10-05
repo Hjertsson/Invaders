@@ -20,7 +20,7 @@ class Program
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f);
 // TODO: Updates
-                window.Clear(new Color(223, 246, 245));
+                window.Clear(new Color(0, 0, 0));
 // TODO: Drawing
                 window.Display();
             }
