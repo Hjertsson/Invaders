@@ -14,7 +14,7 @@ public class GUI : Entity
     public GUI() : base("sheet")
     {
         scoreText = new Text();
-        sprite.TextureRect = new IntRect(20, 20, 18, 18);
+        //sprite.TextureRect = new IntRect(20, 20, 18, 18);
         maxHealth = 3;
     }
 
