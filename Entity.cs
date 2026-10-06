@@ -8,7 +8,7 @@ public abstract class Entity
 {
     private readonly string TextureName;
     protected readonly Sprite sprite;
-    public bool dead;
+    public bool Dead;
 
     protected Entity(string textureName)
     {
@@ -24,9 +24,25 @@ public abstract class Entity
 
     public virtual FloatRect Bounds => sprite.GetGlobalBounds();
 
-    public virtual Create(Scene scene)
+    public virtual void Create(Scene scene)
     {
         sprite.Texture = scene.Assets.LoadTexture(TextureName);
     }
 
+    public virtual void Destroy(Scene scene) {}
+    
+    protected virtual void CollideWith(Scene scene, Entity other) {}
+
+    public virtual void Update(Scene scene, float dt)
+    {
+        foreach (Entity found in scene.FindIntersects(Bounds))
+        {
+            CollideWith(scene, found);
+        }
+    }
+    public virtual void Render(RenderTarget target)
+    {
+        target.Draw(sprite);
+    }
+    
 }

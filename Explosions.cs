@@ -1,6 +1,9 @@
 ﻿namespace Invaders;
 
-public class Explosions : Entity
+public class Explosion : Entity
 {
-    
+    protected Explosion() : base("sheet")
+    {
+        
+    }
 }
