@@ -1,6 +1,9 @@
-﻿namespace Invaders;
+﻿using SFML.Graphics;
+
+
+namespace Invaders;
 
 public class Game
 {
-    //Hantera spelet/speloopen
+  
 }

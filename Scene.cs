@@ -9,6 +9,7 @@ public sealed class Scene
     public readonly EventManager Events;
 
     private Player player = new Player();
+    private Enemy enemy = new Enemy();
     private GUI gui = new GUI();
 
     public Scene()
@@ -19,6 +20,7 @@ public sealed class Scene
 
         Spawn(gui);
         Spawn(player);
+       // Spawn(enemy);
     }
 
     public void Spawn(Entity entity)
