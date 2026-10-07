@@ -28,6 +28,8 @@ public abstract class Entity
     {
         sprite.Texture = scene.Assets.LoadTexture(TextureName);
     }
+    
+    protected virtual void Move(float dt) {}
 
     public virtual void Destroy(Scene scene) {}
     

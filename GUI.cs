@@ -24,9 +24,10 @@ public class GUI : Entity
         scoreText.CharacterSize = 100;
         scoreText.DisplayedString = "Current Score: ";
         scoreText.Scale = new Vector2f(0.1f, 0.1f);
-        scoreText.FillColor = Color.Black;
+        scoreText.FillColor = Color.White;
         
-        
+        scoreText.Position = new Vector2f(Program.SCREEN_WIDTH - scoreText.GetGlobalBounds().Width, 20);
+
         base.Create(scene);
     }
 
@@ -45,7 +46,6 @@ public class GUI : Entity
         }
 
         scoreText.DisplayedString = $"Score: {currentScore}";
-        scoreText.Position = new Vector2f(450 - scoreText.GetGlobalBounds().Width, 400);
         target.Draw(scoreText);
     }
 }

@@ -11,6 +11,7 @@ public sealed class Scene
     private Player player = new Player();
     private Enemy enemy = new Enemy();
     private GUI gui = new GUI();
+    private Background background = new Background();
 
     public Scene()
     {
@@ -18,9 +19,11 @@ public sealed class Scene
         Assets = new AssetManager();
         Events = new EventManager();
 
+        Spawn(background);
         Spawn(gui);
         Spawn(player);
-       // Spawn(enemy);
+        Spawn(enemy);
+        
     }
 
     public void Spawn(Entity entity)
