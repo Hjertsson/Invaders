@@ -6,14 +6,15 @@ namespace Invaders;
 
 public sealed class Player : Ship
 {
-    public Player()
+    public Player() : base(3)
     {
+        
     }
     public override void Create(Scene scene)
     {
         Position = new Vector2f(Program.SCREEN_WIDTH / 2, Program.SCREEN_HEIGHT - 100);
-        sprite.Origin = new Vector2f(55, 55);
-        sprite.TextureRect = new IntRect(0, 941, 110, 110);
+        sprite.TextureRect = new IntRect(0, 941, 112, 75);
+        sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
         base.Create(scene);
     }
 
@@ -55,8 +56,18 @@ public sealed class Player : Ship
         }
     }
 
+    public override void TakeDamage(Scene scene, int amount)
+    {
+        scene.Events.PublishLoseHealth(1);
+        base.TakeDamage(scene, amount);
+    }
+
     public override void Update(Scene scene, float dt)
     {
+        if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+        {
+            TryShoot(scene, new Vector2f(0,-1));
+        }
         Move(dt);
         base.Update(scene, dt);
     }

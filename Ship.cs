@@ -2,30 +2,43 @@
 
 namespace Invaders;
 
-public class Ship : Entity
+public abstract class Ship : Entity
 {
     protected bool Collided;
 
-    //protected Vector2f Direction = new Vector2f(0,0);
+    protected float FireCooldown = 0.5f;
+    private float fireTimer;
     protected readonly float FlightSpeed = 100.0f;
-    
-    
-    protected Ship() : base("sheet") {}
+    protected int Health;
 
-    protected void ShipFacing(Vector2f direction)
+
+    protected Ship(int health) : base("sheet")
     {
-        if (direction.X < 0)
-        {
-            sprite.Rotation = 210f;
-        }
+        Health = health;
+    }
 
-        if (direction.X >= 1)
+
+    protected void TryShoot(Scene scene, Vector2f direction)
+    {
+        if (fireTimer > 0) return;
+        scene.Spawn(new Bullet(this, direction));
+        fireTimer = FireCooldown;
+    }
+
+    public virtual void TakeDamage(Scene scene, int amount)
+    {
+        Health -= amount;
+        if (Health == 0)
         {
-            sprite.Rotation = 110;
+            Dead = true;
+            scene.Spawn(new Explosion(Position));
         }
-        
         
     }
-    
-    
+
+    public override void Update(Scene scene, float dt)
+    {
+        fireTimer -= dt;
+        base.Update(scene, dt);
+    }
 }

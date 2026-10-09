@@ -9,15 +9,16 @@ public class Enemy : Ship
     private Vector2f direction = new Vector2f(RandomDirection(), 1);
     private Vector2f newPos;
     
-    public Enemy()
+    public Enemy() : base(1)
     {
+        FireCooldown = 1.5f;
     }
 
     public override void Create(Scene scene)
     {
         sprite.Position = new Vector2f(new Random().Next(55, Program.SCREEN_WIDTH - 55),-55);
-        sprite.TextureRect = new IntRect(0, 941, 110, 110);
-        sprite.Origin = new Vector2f(55, 55);
+        sprite.TextureRect = new IntRect(423, 728, 93, 84);
+        sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
         newPos = sprite.Position;
         base.Create(scene);
         
@@ -61,10 +62,22 @@ public class Enemy : Ship
 
         return 1;
     }
+    private void ShipFacing()
+    {
+        if (direction.X < 0)
+        {
+            sprite.Rotation = 45f;
+        }
+
+        if (direction.X >= 1)
+        {
+            sprite.Rotation = 315f;
+        }
+    }
 
     public override void Update(Scene scene, float dt)
     {
-        ShipFacing(direction);
+        ShipFacing();
         Move(dt);
         base.Update(scene, dt);
     }
