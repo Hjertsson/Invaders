@@ -12,7 +12,7 @@ public abstract class Entity
 
     protected Entity(string textureName)
     {
-        this.TextureName = textureName;
+        TextureName = textureName;
         sprite = new Sprite();
     }
 

@@ -6,8 +6,6 @@ namespace Invaders;
 
 public sealed class Player : Ship
 {
-    private Vector2f playerShipSize;
-
     public Player()
     {
     }
