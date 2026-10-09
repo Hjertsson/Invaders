@@ -7,6 +7,7 @@ namespace Invaders;
 public class GUI : Entity
 {
     private readonly Text scoreText;
+    private readonly Texture texture;
     private int maxHealth;
     private int currentHealth;
     private int currentScore = 100;
@@ -15,6 +16,7 @@ public class GUI : Entity
     {
         scoreText = new Text();
         //sprite.TextureRect = new IntRect(20, 20, 18, 18);
+        
         maxHealth = 3;
     }
 
@@ -28,6 +30,7 @@ public class GUI : Entity
         
         scoreText.Position = new Vector2f(Program.SCREEN_WIDTH - scoreText.GetGlobalBounds().Width, 20);
 
+        
         base.Create(scene);
     }
 

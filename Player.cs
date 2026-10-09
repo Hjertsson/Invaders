@@ -12,7 +12,7 @@ public sealed class Player : Ship
     }
     public override void Create(Scene scene)
     {
-        Position = new Vector2f(Program.SCREEN_WIDTH / 2, Program.SCREEN_HEIGHT - 100);
+        Position = new Vector2f(Program.SCREEN_WIDTH / 2f, Program.SCREEN_HEIGHT - 100);
         sprite.TextureRect = new IntRect(0, 941, 112, 75);
         sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
         base.Create(scene);

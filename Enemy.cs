@@ -4,7 +4,7 @@ using SFML.Window;
 
 namespace Invaders;
 
-public class Enemy : Ship
+public sealed class Enemy : Ship
 {
     private Vector2f direction = new Vector2f(RandomDirection(), 1);
     private Vector2f newPos;

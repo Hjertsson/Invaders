@@ -31,22 +31,7 @@ public sealed class Scene
         entities.Add(entity);
         entity.Create(this);
     }
-
-    public bool FinByType<T>(out T found) where T : Entity
-    {
-        foreach (var entity in entities)
-        {
-            if (!entity.Dead && entity is T typed)
-            {
-                found = typed;
-                return true;
-            }
-        }
-
-        found = default(T);
-        return false;
-    }
-
+    
     public IEnumerable<Entity> FindIntersects(FloatRect bounds)
     {
         int lastEntity = entities.Count - 1;
