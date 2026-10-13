@@ -7,6 +7,7 @@ public sealed class Scene
     private List<Entity> entities;
     public readonly AssetManager Assets;
     public readonly EventManager Events;
+    private EnemyManager enemySpawner = new EnemyManager();
 
     private Player player = new Player();
     private Enemy enemy = new Enemy();
@@ -22,8 +23,7 @@ public sealed class Scene
         Spawn(background);
         Spawn(gui);
         Spawn(player);
-        Spawn(enemy);
-        
+        Spawn(enemySpawner);
     }
 
     public void Spawn(Entity entity)
@@ -61,6 +61,7 @@ public sealed class Scene
             if(entity.Dead) entities.RemoveAt(i);
             else i++;
         }
+        Events.CheckEvent(this);
     }
     public void RenderAll(RenderTarget target)
     {

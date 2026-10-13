@@ -5,11 +5,7 @@ namespace Invaders;
 
 public sealed class Explosion : Entity
 {
-    private const float FrameTime = 0.08f;
-    private const int FrameCount = 4, FrameW = 64, FrameH = 64, StartX = 0, StartY = 0; //Sheet positionen
-    //Blue: (596, 961, 48, 46), (434, 325, 48, 46)
-    
-    //red: (580, 661, 48, 46), (602, 600, 48, 46)
+    private const float explosionDuration = 0.3f;
     private float timer;
 
     public Explosion(Vector2f position) : base("sheet")
@@ -19,21 +15,18 @@ public sealed class Explosion : Entity
 
     public override void Create(Scene scene)
     {
-        sprite.TextureRect = new IntRect(StartX, StartY, FrameW, FrameH);
-        sprite.Origin = new Vector2f(FrameW / 2f, FrameH / 2f);
+        sprite.TextureRect = new IntRect(580, 661, 48, 46);
+        sprite.Origin = new Vector2f(24,23);
         base.Create(scene);
     }
 
     public override void Update(Scene scene, float dt)
     {
         timer += dt;
-        int frame = (int)(timer / FrameTime);
-        if (frame >= FrameCount)
+        if (timer >= explosionDuration)
         {
-            Dead = true; 
-            return;
+            Dead = true;
         }
 
-        sprite.TextureRect = new IntRect(StartX + frame * FrameW, StartY, FrameW, FrameH);
     }
 }

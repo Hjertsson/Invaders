@@ -6,9 +6,18 @@ namespace Invaders;
 
 public sealed class Player : Ship
 {
+    private static readonly Vector2f GunLeft = new Vector2f(-32, -10);
+    private static readonly Vector2f GunRight = new Vector2f(32, -10);
+
+    //private const int gainedSore = 10;
+    private float scoreTimer;
+    
+    private bool immortal = false;
+    private float timer;
+    
     public Player() : base(3)
     {
-        
+        HitBoxSize = new Vector2f(70, 55);
     }
     public override void Create(Scene scene)
     {
@@ -30,12 +39,12 @@ public sealed class Player : Ship
     protected override void Move(float dt)
     {
         var newPos = sprite.Position;
-
+        
         if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
         {
             newPos.Y -= dt * FlightSpeed;
         }
-
+        
         if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
         {
             newPos.Y += dt * FlightSpeed;
@@ -56,14 +65,53 @@ public sealed class Player : Ship
         }
     }
 
+    protected override void Shoot(Scene scene, Vector2f direction)
+    {
+        scene.Spawn(new Bullet(this, direction, Position + GunLeft));
+        scene.Spawn(new Bullet(this, direction, Position + GunRight));
+    }
+
     public override void TakeDamage(Scene scene, int amount)
     {
-        scene.Events.PublishLoseHealth(1);
+        if(immortal) return;
+        
+        scene.Events.PublishLoseHealth(amount);
+        immortal = true;
+        timer = 0;
         base.TakeDamage(scene, amount);
+    }
+
+    protected override void CollideWith(Scene scene, Entity other)
+    {
+        if (other is Enemy enemy && !enemy.Dead)
+        {
+            enemy.TakeDamage(scene, 1);
+            TakeDamage(scene, 1);
+        }
     }
 
     public override void Update(Scene scene, float dt)
     {
+        scoreTimer += dt;
+        if (scoreTimer > 1f)
+        {
+            scoreTimer = 0;
+            scene.Events.PublishGainScore(100);
+        }
+        
+        
+        
+        timer += dt;
+        if (immortal)
+        {
+            sprite.Color = new Color(255, 255, 255 , 100);
+            if (timer >= 2)
+            {
+                sprite.Color = new Color(255, 255, 255);
+                immortal = false;
+            }
+        }
+        
         if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
         {
             TryShoot(scene, new Vector2f(0,-1));

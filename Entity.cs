@@ -30,8 +30,6 @@ public abstract class Entity
     }
     
     protected virtual void Move(float dt) {}
-
-    public virtual void Destroy(Scene scene) {}
     
     protected virtual void CollideWith(Scene scene, Entity other) {}
 

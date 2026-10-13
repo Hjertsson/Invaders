@@ -7,25 +7,33 @@ namespace Invaders;
 public sealed class Bullet : Entity
 {
     private const float speed = 400.0f;
-    private readonly Ship owner;
+    private readonly Ship currentEntity;
     private readonly Vector2f direction;
-    public int Damage { get; } = 1;
+    private int Damage { get; } = 1;
     
-    
-    //BLue new IntRect(856, 421, 9, 54)
-    //Red (858, 230, 9, 54)
-    
-    public Bullet(Ship owmer, Vector2f direction) : base ("sheet")
+    public Bullet(Ship entity, Vector2f direction, Vector2f spawnPosition) : base ("sheet")
     {
-        this.owner = owmer;
+        currentEntity = entity;
         this.direction = direction;
-        Position = owner.Position;
+        Position = spawnPosition;
     }
 
     public override void Create(Scene scene)
     {
-        sprite.TextureRect = new IntRect(0, 0, 24, 24);
-        sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2, sprite.TextureRect.Height / 2);
+        sprite.TextureRect = currentEntity is Player
+            ? new IntRect(856, 421, 9, 54)
+            : new IntRect(858, 238, 9, 54);
+        sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2f, sprite.TextureRect.Height / 2f);
+
+        if (direction.Y > 0 && direction.X > 0)
+        {
+            sprite.Rotation = 135f;
+        }
+        else if (direction.Y > 0 && direction.X < 0)
+        {
+            sprite.Rotation = 225f;
+        }
+        
         base.Create(scene);
     }
 
@@ -40,11 +48,10 @@ public sealed class Bullet : Entity
     protected override void CollideWith(Scene scene, Entity other)
     {
         if(Dead || other is not Ship ship || ship.Dead) return;
-        if (ship.GetType() == owner.GetType()) return;
+        if (ship.GetType() == currentEntity.GetType()) return;
 
         ship.TakeDamage(scene, Damage);
         Dead = true;
-        scene.Spawn(new Explosion(Position));
     }
 
     public override void Update(Scene scene, float dt)

@@ -11,6 +11,7 @@ public sealed class Enemy : Ship
     
     public Enemy() : base(1)
     {
+        HitBoxSize = new Vector2f(70, 60);
         FireCooldown = 1.5f;
     }
 
@@ -29,7 +30,7 @@ public sealed class Enemy : Ship
         newPos += direction * dt * FlightSpeed;
         if (newPos.Y > Program.SCREEN_HEIGHT + 55)
         {
-            newPos.Y = 25;
+            newPos.Y = -55;
         }
         if (newPos.X < 0 + 50)
         {
@@ -79,6 +80,7 @@ public sealed class Enemy : Ship
     {
         ShipFacing();
         Move(dt);
+        TryShoot(scene, direction);
         base.Update(scene, dt);
     }
 }
