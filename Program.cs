@@ -25,7 +25,6 @@ class Program
                 window.DispatchEvents();
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f);
-                
                 scene.UpdateAll(dt);
                 
                 window.Clear(new Color(0, 0, 0));

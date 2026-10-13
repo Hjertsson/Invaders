@@ -10,7 +10,7 @@ public sealed class Scene
     private EnemyManager enemySpawner = new EnemyManager();
 
     private Player player = new Player();
-    private Enemy enemy = new Enemy();
+    //private Enemy enemy = new Enemy();
     private GUI gui = new GUI();
     private Background background = new Background();
 
@@ -63,6 +63,7 @@ public sealed class Scene
         }
         Events.CheckEvent(this);
     }
+    
     public void RenderAll(RenderTarget target)
     {
         for (int i = 0; i < entities.Count; i++)

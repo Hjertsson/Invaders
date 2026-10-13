@@ -9,7 +9,14 @@ public sealed class Bullet : Entity
     private const float speed = 400.0f;
     private readonly Ship currentEntity;
     private readonly Vector2f direction;
-    private int Damage { get; } = 1;
+
+    private int borderOffset = 50;
+
+    private static readonly IntRect PlayerBullet = new IntRect(856, 421, 9, 54);
+    private static readonly IntRect EnemyBullet = new IntRect(858, 238, 9, 54);
+    //private int damage { get; } = 1;
+
+    private readonly int damage = 1;
     
     public Bullet(Ship entity, Vector2f direction, Vector2f spawnPosition) : base ("sheet")
     {
@@ -21,8 +28,8 @@ public sealed class Bullet : Entity
     public override void Create(Scene scene)
     {
         sprite.TextureRect = currentEntity is Player
-            ? new IntRect(856, 421, 9, 54)
-            : new IntRect(858, 238, 9, 54);
+            ? PlayerBullet
+            : EnemyBullet;
         sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2f, sprite.TextureRect.Height / 2f);
 
         if (direction.Y > 0 && direction.X > 0)
@@ -40,7 +47,7 @@ public sealed class Bullet : Entity
     protected override void Move(float dt)
     {
         Position += direction * speed * dt;
-        if (Position.Y < -50 || Position.Y > Program.SCREEN_HEIGHT + 50)
+        if (Position.Y < - borderOffset || Position.Y > borderOffset)
         {
             Dead = true;
         }
@@ -50,7 +57,7 @@ public sealed class Bullet : Entity
         if(Dead || other is not Ship ship || ship.Dead) return;
         if (ship.GetType() == currentEntity.GetType()) return;
 
-        ship.TakeDamage(scene, Damage);
+        ship.TakeDamage(scene, damage);
         Dead = true;
     }
 
