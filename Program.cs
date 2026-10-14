@@ -12,7 +12,7 @@ class Program
     
     static void Main(string[] args)
     {
-        Scene scene = new Scene();
+        Game game = new Game();
         
         using (var window = new RenderWindow(
                    new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
@@ -25,11 +25,11 @@ class Program
                 window.DispatchEvents();
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f);
-                scene.UpdateAll(dt);
+                game.Update(dt);
                 
                 window.Clear(new Color(0, 0, 0));
 
-                scene.RenderAll(window);
+                game.Render(window);
                 window.Display();
             }
         }

@@ -1,6 +1,8 @@
-﻿using SFML.Graphics;
+﻿using System.Security.AccessControl;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using SFML.Audio;
 
 namespace Invaders;
 
@@ -9,11 +11,17 @@ public sealed class Player : Ship
     private static readonly Vector2f GunLeft = new Vector2f(-32, -10);
     private static readonly Vector2f GunRight = new Vector2f(32, -10);
 
-    //private const int gainedSore = 10;
-    private float scoreTimer;
+    private static readonly Color DefaultColor = Color.White;
+    private static readonly Color ImmortalColor = new Color(60, 60, 60, 140);
     
-    private bool immortal = false;
-    private float timer;
+    private const int EnemyShipWidth = 50;
+    
+    private const int damage = 1;
+    
+    private float scoreTimer;
+
+    private bool immortal;
+    private float immortalTimer;
     
     public Player() : base(3)
     {
@@ -25,14 +33,15 @@ public sealed class Player : Ship
         sprite.TextureRect = new IntRect(0, 941, 112, 75);
         sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
         base.Create(scene);
+        BulletSound.Volume = 20;
     }
 
     private bool BorderCheck(Vector2f position)
     {
-        bool up = position.Y < 0 + 55;
-        bool down = position.Y > Program.SCREEN_HEIGHT - 20;
-        bool right = position.X > Program.SCREEN_WIDTH -55;
-        bool left = position.X < 0 + 55;
+        bool up = position.Y < EnemyShipWidth + 10;
+        bool down = position.Y > Program.SCREEN_HEIGHT - EnemyShipWidth + 10;
+        bool right = position.X > Program.SCREEN_WIDTH -EnemyShipWidth;
+        bool left = position.X < 0 + EnemyShipWidth;
         return up || down || right || left;
     }
 
@@ -77,7 +86,7 @@ public sealed class Player : Ship
         
         scene.Events.PublishLoseHealth(amount);
         immortal = true;
-        timer = 0;
+        immortalTimer = 0;
         base.TakeDamage(scene, amount);
     }
 
@@ -85,8 +94,8 @@ public sealed class Player : Ship
     {
         if (other is Enemy enemy && !enemy.Dead)
         {
-            enemy.TakeDamage(scene, 1);
-            TakeDamage(scene, 1);
+            enemy.TakeDamage(scene, damage);
+            TakeDamage(scene, damage);
         }
     }
 
@@ -98,16 +107,13 @@ public sealed class Player : Ship
             scoreTimer = 0;
             scene.Events.PublishGainScore(100);
         }
-        
-        
-        
-        timer += dt;
+        immortalTimer += dt;
         if (immortal)
         {
-            sprite.Color = new Color(255, 255, 255 , 100);
-            if (timer >= 2)
+            sprite.Color = ImmortalColor;
+            if (immortalTimer >= 2)
             {
-                sprite.Color = new Color(255, 255, 255);
+                sprite.Color = DefaultColor;
                 immortal = false;
             }
         }

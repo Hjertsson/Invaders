@@ -8,8 +8,8 @@ public sealed class EventManager
     private int healthLost;
 
 
-    public event ValueChangedEvent GainScore;
-    public event ValueChangedEvent LoseHealth;
+    public event ValueChangedEvent OnGainScore;
+    public event ValueChangedEvent OnLoseHealth;
 
 
     public void PublishGainScore(int amount) => scoreGain += amount;
@@ -19,13 +19,13 @@ public sealed class EventManager
     {
         if (scoreGain != 0)
         {
-            GainScore?.Invoke(scene, scoreGain);
+            OnGainScore?.Invoke(scene, scoreGain);
             scoreGain = 0;
         }
 
         if (healthLost != 0)
         {
-            LoseHealth?.Invoke(scene, healthLost);
+            OnLoseHealth?.Invoke(scene, healthLost);
             healthLost = 0;
         }
     }

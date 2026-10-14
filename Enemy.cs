@@ -1,18 +1,21 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
+using SFML.Audio;
+
 
 namespace Invaders;
 
 public sealed class Enemy : Ship
 {
-    private Vector2f direction = new Vector2f(RandomDirection(), 1);
+    private Vector2f direction;
     private Vector2f newPos;
+    private const int enemyShipWidth = 50;
     
     public Enemy() : base(1)
     {
         HitBoxSize = new Vector2f(70, 60);
         FireCooldown = 1.5f;
+        direction = new Vector2f(RandomDirection(), 1);
     }
 
     public override void Create(Scene scene)
@@ -22,24 +25,24 @@ public sealed class Enemy : Ship
         sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
         newPos = sprite.Position;
         base.Create(scene);
-        
+        BulletSound.Volume = 10;
     }
 
     protected override void Move(float dt)
     {
         newPos += direction * dt * FlightSpeed;
-        if (newPos.Y > Program.SCREEN_HEIGHT + 55)
+        if (newPos.Y > Program.SCREEN_HEIGHT + enemyShipWidth)
         {
-            newPos.Y = -55;
+            newPos.Y = -enemyShipWidth;
         }
-        if (newPos.X < 0 + 50)
+        if (newPos.X < enemyShipWidth)
         {
-            newPos.X = 55;
+            newPos.X = enemyShipWidth;
             Reflect(new Vector2f(1,0));
         }
-        if (newPos.X > Program.SCREEN_WIDTH - 35)
+        if (newPos.X > Program.SCREEN_WIDTH - enemyShipWidth)
         {
-            newPos.X = Program.SCREEN_WIDTH - 35;
+            newPos.X = Program.SCREEN_WIDTH - enemyShipWidth;
             Reflect(new Vector2f(-1, 0));
         }
         

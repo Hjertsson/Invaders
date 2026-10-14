@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 
 namespace Invaders;
 
@@ -7,23 +8,27 @@ public sealed class Scene
     private List<Entity> entities;
     public readonly AssetManager Assets;
     public readonly EventManager Events;
-    private EnemyManager enemySpawner = new EnemyManager();
+    private readonly EnemyManager enemySpawner = new EnemyManager();
+    private readonly Sprite backgroundSprite = new Sprite();
 
     private Player player = new Player();
-    //private Enemy enemy = new Enemy();
     private GUI gui = new GUI();
-    private Background background = new Background();
 
-    public Scene()
+    public bool IsGameOver => player.Dead;
+    public int Score => gui.Score;
+
+    public Scene(AssetManager assets)
     {
         entities = new List<Entity>();
-        Assets = new AssetManager();
+        Assets = assets;
         Events = new EventManager();
 
-        Spawn(background);
-        Spawn(gui);
+        backgroundSprite.Texture = Assets.LoadTexture("purple");
+        backgroundSprite.Texture.Repeated = true;
+        backgroundSprite.TextureRect = new IntRect(0, 0, Program.SCREEN_WIDTH, Program.SCREEN_HEIGHT);
+        
+        gui.Create(this);
         Spawn(player);
-        Spawn(enemySpawner);
     }
 
     public void Spawn(Entity entity)
@@ -47,7 +52,7 @@ public sealed class Scene
         }
     }
 
-    public void UpdateAll(float dt)
+    public void Update(float dt)
     {
         for (int i = entities.Count - 1; i >= 0 ; i--)
         {
@@ -61,14 +66,18 @@ public sealed class Scene
             if(entity.Dead) entities.RemoveAt(i);
             else i++;
         }
+        
+        enemySpawner.Update(this, dt);
         Events.CheckEvent(this);
     }
     
-    public void RenderAll(RenderTarget target)
+    public void Render(RenderTarget target)
     {
+        target.Draw(backgroundSprite);
         for (int i = 0; i < entities.Count; i++)
         {
             entities[i].Render(target);
         }
+        gui.Render(target);
     }
 }

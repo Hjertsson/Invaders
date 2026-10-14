@@ -1,16 +1,17 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using SFML.Audio;
 
 namespace Invaders;
 
 public abstract class Ship : Entity
 {
-    protected bool Collided;
-
-    protected float FireCooldown = 0.5f;
+    protected float FireCooldown = 1f;
     private float fireTimer;
     protected readonly float FlightSpeed = 100.0f;
     protected int Health;
+    
+    protected Sound BulletSound;
 
     protected Vector2f HitBoxSize;
 
@@ -19,10 +20,17 @@ public abstract class Ship : Entity
         Health = health;
     }
 
+    public override void Create(Scene scene)
+    {
+        BulletSound = new Sound(scene.Assets.LoadSound("laser4"));
+        base.Create(scene);
+    }
+
 
     protected void TryShoot(Scene scene, Vector2f direction)
     {
         if (fireTimer > 0) return;
+        BulletSound.Play();
         Shoot(scene, direction);
         fireTimer = FireCooldown;
     }
@@ -34,7 +42,6 @@ public abstract class Ship : Entity
 
     public virtual void TakeDamage(Scene scene, int amount)
     {
-        
         Health -= amount;
         if (Health <= 0)
         {
