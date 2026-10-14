@@ -14,8 +14,8 @@ public sealed class Scene
     private Player player = new Player();
     private GUI gui = new GUI();
 
-    public bool IsGameOver => player.Dead;
-    public int Score => gui.Score;
+    public bool GameOver => player.Dead; //Ger Game access till när spelaren är död
+    public int Score => gui.Score; //Ger Game access til score
 
     public Scene(AssetManager assets)
     {

@@ -28,10 +28,6 @@ public sealed class Explosion : Entity
     {
         timer += dt;
         ExplosionSound.Play();
-        //float t = 1.0f - timer / explosionDuration;
-        //float scale = MathF.Max(0, smoothstep(t));
-        //sprite.Scale = new Vector2f(scale, scale);
-        
         if (timer >= explosionDuration)
         {
             Dead = true;

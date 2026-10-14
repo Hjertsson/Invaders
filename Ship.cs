@@ -6,9 +6,9 @@ namespace Invaders;
 
 public abstract class Ship : Entity
 {
-    protected float FireCooldown = 1f;
-    private float fireTimer;
-    protected readonly float FlightSpeed = 100.0f;
+    protected float ShootCooldown = 1f;
+    private float shootTimer;
+    protected readonly float Speed = 100.0f;
     protected int Health;
     
     protected Sound BulletSound;
@@ -29,10 +29,10 @@ public abstract class Ship : Entity
 
     protected void TryShoot(Scene scene, Vector2f direction)
     {
-        if (fireTimer > 0) return;
+        if (shootTimer > 0) return;
         BulletSound.Play();
         Shoot(scene, direction);
-        fireTimer = FireCooldown;
+        shootTimer = ShootCooldown;
     }
 
     protected virtual void Shoot(Scene scene, Vector2f direction)
@@ -59,7 +59,7 @@ public abstract class Ship : Entity
 
     public override void Update(Scene scene, float dt)
     {
-        fireTimer -= dt;
+        shootTimer -= dt;
         base.Update(scene, dt);
     }
 }

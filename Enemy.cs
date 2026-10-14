@@ -14,7 +14,7 @@ public sealed class Enemy : Ship
     public Enemy() : base(1)
     {
         HitBoxSize = new Vector2f(70, 60);
-        FireCooldown = 1.5f;
+        ShootCooldown = 1.5f;
         direction = new Vector2f(RandomDirection(), 1);
     }
 
@@ -30,7 +30,7 @@ public sealed class Enemy : Ship
 
     protected override void Move(float dt)
     {
-        newPos += direction * dt * FlightSpeed;
+        newPos += direction * dt * Speed;
         if (newPos.Y > Program.SCREEN_HEIGHT + enemyShipWidth)
         {
             newPos.Y = -enemyShipWidth;
@@ -45,7 +45,6 @@ public sealed class Enemy : Ship
             newPos.X = Program.SCREEN_WIDTH - enemyShipWidth;
             Reflect(new Vector2f(-1, 0));
         }
-        
         sprite.Position = newPos;
     }
 

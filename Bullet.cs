@@ -22,21 +22,21 @@ public sealed class Bullet : Entity
     private const int damage = 1;
     
     
-    public Bullet(Ship entity, Vector2f direction, Vector2f spawnPosition) : base ("sheet")
+    public Bullet(Ship entity, Vector2f direction, Vector2f spawnPosition) : base ("sheet") //Objektet som skapas skickar med sig själv som "entity"
     {
         currentEntity = entity;
         this.direction = direction;
         Position = spawnPosition;
     }
 
-    public override void Create(Scene scene)
+    public override void Create(Scene scene) //Skapar bullet, kollar först om entity som skickades med i konstruktorn är en player
     {
         sprite.TextureRect = currentEntity is Player
-            ? PlayerBullet
+            ? PlayerBullet //Om det är en player så används PlayerBullet textur, annars EnemyBullet
             : EnemyBullet;
         sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2f, sprite.TextureRect.Height / 2f);
 
-        if (direction.Y > 0 && direction.X > 0)
+        if (direction.Y > 0 && direction.X > 0) // Kollar om direction X är mer eller mindre än 0, och sätter rotation för Spriten för att den ska peka rätt
         {
             sprite.Rotation = rotationRight;
         }
@@ -58,8 +58,8 @@ public sealed class Bullet : Entity
     }
     protected override void CollideWith(Scene scene, Entity other)
     {
-        if(Dead || other is not Ship ship || ship.Dead) return;
-        if (ship.GetType() == currentEntity.GetType()) return;
+        if(Dead || other is not Ship ship || ship.Dead) return; //Kollar om Bullet är död, eller kollisionen skedde med ett objekt som inte är ett "Ship", eller om de kollderade med ett dött skepp, siåfall returneras det direkt
+        if (ship.GetType() == currentEntity.GetType()) return; //Kollar om skepet som skickades in i konstruktorn är samma som objektet som kolliderades med, isåfall returnerar det direkt
 
         ship.TakeDamage(scene, damage);
         Dead = true;

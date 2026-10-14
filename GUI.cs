@@ -13,7 +13,7 @@ public class GUI
 
     private Sprite GUISprite = new Sprite();
 
-    public int Score => currentScore;
+    public int Score => currentScore; //Ger Scene access till Score
     
     private static readonly IntRect HealthPng = new IntRect(502, 991, 36, 26);
     

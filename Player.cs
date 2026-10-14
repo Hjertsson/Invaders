@@ -51,22 +51,22 @@ public sealed class Player : Ship
         
         if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
         {
-            newPos.Y -= dt * FlightSpeed;
+            newPos.Y -= dt * Speed;
         }
         
         if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
         {
-            newPos.Y += dt * FlightSpeed;
+            newPos.Y += dt * Speed;
         }
 
         if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
         {
-            newPos.X -= dt * FlightSpeed;
+            newPos.X -= dt * Speed;
         }
 
         if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
         {
-            newPos.X += dt * FlightSpeed;
+            newPos.X += dt * Speed;
         }
         if (!BorderCheck(newPos))
         {

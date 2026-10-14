@@ -7,20 +7,20 @@ namespace Invaders;
 public enum GameState
 {
     MainMenu,
-    Playing
+    Game
 }
 
 public sealed class Game
 {
-    private const float DeathDelay = 1.5f;
+    private const float delay = 1.5f;
 
     private readonly AssetManager assets = new AssetManager();
     private readonly Text menuText = new Text();
 
-    private GameState state = GameState.MainMenu;
-    private Scene? scene;
+    private GameState state = GameState.MainMenu; 
+    private Scene scene;
     private float deathTimer;
-    private int lastScore = -1;
+    private int lastScore;
 
     public Game()
     {
@@ -35,16 +35,16 @@ public sealed class Game
             case GameState.MainMenu:
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Enter))
                 {
-                    StartGame();
+                    Start();
                 }
 
                 break;
-            case GameState.Playing:
-                scene!.Update(dt);
-                if (scene.IsGameOver)
+            case GameState.Game:
+                scene.Update(dt);
+                if (scene.GameOver)
                 {
                     deathTimer += dt;
-                    if (deathTimer >= DeathDelay)
+                    if (deathTimer >= delay)
                     {
                         lastScore = scene.Score;
                         state = GameState.MainMenu;
@@ -60,31 +60,30 @@ public sealed class Game
         switch (state)
         {
             case GameState.MainMenu:
-                DrawCentered(target, "INVADERS", 48, 250);
-                DrawCentered(target, "Press Enter To Play", 20, 400);
+                DrawMenu(target, "INVADERS", 250);
+                DrawMenu(target, "Press Enter To Play", 400);
                 if (lastScore >= 0)
                 {
-                    DrawCentered(target, $"Last score: {lastScore}", 20, 460);
+                    DrawMenu(target, $"Last score: {lastScore}", 460);
                 }
 
                 break;
-            case GameState.Playing:
+            case GameState.Game:
                 scene!.Render(target);
                 break;
         }
     }
 
-    private void StartGame()
+    private void Start()
     {
         scene = new Scene(assets);
         deathTimer = 0;
-        state = GameState.Playing;
+        state = GameState.Game;
     }
 
-    private void DrawCentered(RenderTarget target, string words, uint size, float y)
+    private void DrawMenu(RenderTarget target, string text, float y)
     {
-        menuText.DisplayedString = words;
-        menuText.CharacterSize = size;
+        menuText.DisplayedString = text;
         FloatRect bounds = menuText.GetLocalBounds();
         menuText.Origin = new Vector2f(bounds.Left + bounds.Width / 2f, bounds.Top + bounds.Height / 2f);
         menuText.Position = new Vector2f(Program.SCREEN_WIDTH / 2f, y);
