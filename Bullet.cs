@@ -31,11 +31,9 @@ public sealed class Bullet : Entity
 
     public override void Create(Scene scene) //Skapar bullet, kollar först om entity som skickades med i konstruktorn är en player
     {
-        sprite.TextureRect = currentEntity is Player
-            ? PlayerBullet //Om det är en player så används PlayerBullet textur, annars EnemyBullet
-            : EnemyBullet;
-        sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2f, sprite.TextureRect.Height / 2f);
-
+        
+        SetTextureRect(currentEntity is Player ? PlayerBullet : EnemyBullet);
+        
         if (direction.Y > 0 && direction.X > 0) // Kollar om direction X är mer eller mindre än 0, och sätter rotation för Spriten för att den ska peka rätt
         {
             sprite.Rotation = rotationRight;

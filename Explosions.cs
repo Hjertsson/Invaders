@@ -21,13 +21,13 @@ public sealed class Explosion : Entity
         sprite.Origin = new Vector2f(24,23);
         ExplosionSound = new Sound(scene.Assets.LoadSound("8bit_bomb"));
         ExplosionSound.Volume = 5;
+        ExplosionSound.Play();
         base.Create(scene);
     }
 
     public override void Update(Scene scene, float dt)
     {
         timer += dt;
-        ExplosionSound.Play();
         if (timer >= explosionDuration)
         {
             Dead = true;

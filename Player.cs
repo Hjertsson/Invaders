@@ -8,6 +8,8 @@ namespace Invaders;
 
 public sealed class Player : Ship
 {
+    private IntRect PlayerShip = new IntRect(0, 941, 112, 75);
+    
     private static readonly Vector2f GunLeft = new Vector2f(-32, -10);
     private static readonly Vector2f GunRight = new Vector2f(32, -10);
 
@@ -30,8 +32,9 @@ public sealed class Player : Ship
     public override void Create(Scene scene)
     {
         Position = new Vector2f(Program.SCREEN_WIDTH / 2f, Program.SCREEN_HEIGHT - 100);
-        sprite.TextureRect = new IntRect(0, 941, 112, 75);
-        sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
+        //sprite.TextureRect = new IntRect(0, 941, 112, 75);
+        SetTextureRect(PlayerShip);
+        //sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
         base.Create(scene);
         BulletSound.Volume = 20;
     }
@@ -104,7 +107,7 @@ public sealed class Player : Ship
         scoreTimer += dt;
         if (scoreTimer > 1f)
         {
-            scoreTimer = 0;
+            scoreTimer -= 1f;
             scene.Events.PublishGainScore(100);
         }
         immortalTimer += dt;

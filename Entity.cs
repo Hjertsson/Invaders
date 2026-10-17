@@ -28,6 +28,12 @@ public abstract class Entity
     {
         sprite.Texture = scene.Assets.LoadTexture(TextureName);
     }
+
+    protected void SetTextureRect(IntRect rect)
+    {
+        sprite.TextureRect = rect;
+        sprite.Origin = new Vector2f(rect.Width / 2f, rect.Height / 2f);
+    }
     
     protected virtual void Move(float dt) {}
     

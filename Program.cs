@@ -18,7 +18,7 @@ class Program
                    new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
             window.Closed += (o, e) => window.Close();
-// TODO: Initialize
+            window.TextEntered += (o, e) => game.OnTextInput(e.Unicode);
             Clock clock = new Clock();
             while (window.IsOpen)
             {

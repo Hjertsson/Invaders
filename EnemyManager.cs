@@ -10,8 +10,6 @@ public sealed class EnemyManager
     private float spawnTimer = DefaultSpawnTimer;
     private float timer;
     
-    public EnemyManager(){}
-
     public void Update(Scene scene, float dt)
     {
         timer += dt;

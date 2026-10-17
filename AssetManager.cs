@@ -37,6 +37,8 @@ public sealed class AssetManager
     {
         if (fonts.TryGetValue(name, out Font found)) return found;
         Font font = new Font($"{AssetPath}/{name}.ttf");
+        fonts.Add(name, font);
+        
         return font;
     }
 }

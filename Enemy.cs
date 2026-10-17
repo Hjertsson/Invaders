@@ -9,7 +9,9 @@ public sealed class Enemy : Ship
 {
     private Vector2f direction;
     private Vector2f newPos;
-    private const int enemyShipWidth = 50;
+    private const int enemyShipWidth = 70;
+
+    private IntRect EnemyShip = new IntRect(423, 728, 93, 84);
     
     public Enemy() : base(1)
     {
@@ -21,11 +23,18 @@ public sealed class Enemy : Ship
     public override void Create(Scene scene)
     {
         sprite.Position = new Vector2f(new Random().Next(55, Program.SCREEN_WIDTH - 55),-55);
-        sprite.TextureRect = new IntRect(423, 728, 93, 84);
-        sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
+        //sprite.TextureRect = new IntRect(423, 728, 93, 84);
+        //sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
+        SetTextureRect(EnemyShip);
         newPos = sprite.Position;
         base.Create(scene);
         BulletSound.Volume = 10;
+    }
+
+    protected override void Shoot(Scene scene, Vector2f direction)
+    {
+        base.Shoot(scene, direction);
+        ShootCooldown = 1f + (float)Random.Shared.NextDouble() * 2f;
     }
 
     protected override void Move(float dt)
