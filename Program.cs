@@ -26,7 +26,11 @@ class Program
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f);
                 game.Update(dt);
-                
+                if (game.QuitRequest)
+                {
+                    window.Close();
+                    break;
+                }
                 window.Clear(new Color(0, 0, 0));
 
                 game.Render(window);

@@ -1,6 +1,5 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using SFML.Audio;
 
 
 namespace Invaders;
@@ -22,9 +21,7 @@ public sealed class Enemy : Ship
 
     public override void Create(Scene scene)
     {
-        sprite.Position = new Vector2f(new Random().Next(55, Program.SCREEN_WIDTH - 55),-55);
-        //sprite.TextureRect = new IntRect(423, 728, 93, 84);
-        //sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
+        sprite.Position = new Vector2f(new Random().Next(55, Program.SCREEN_WIDTH - 55), enemyShipWidth);
         SetTextureRect(EnemyShip);
         newPos = sprite.Position;
         base.Create(scene);

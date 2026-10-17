@@ -1,13 +1,14 @@
-﻿using System.Xml.Linq;
-
+﻿
 namespace Invaders;
 
 public sealed class HighScore
 {
     private const string FilePath = "highscore.txt";
+    private const int PlayerLimit = 10;
 
-    public string Name { get; private set; } = "";
-    public int Score { get; private set; }
+    private readonly List<HighScoreEntry> highscores = new List<HighScoreEntry>();
+    public List<HighScoreEntry> Highscores => highscores;
+    
 
     public HighScore()
     {
@@ -16,10 +17,20 @@ public sealed class HighScore
 
     public bool AddHighScore(string name, int score)
     {
-        if (score <= Score) return false;
+        int index = 0;
+        while (index < highscores.Count && highscores[index].Score >= score)
+        {
+            index++;
+        }
 
-        Name = name;
-        Score = score;
+        if (index >= PlayerLimit) return false;
+        
+        highscores.Insert(index, new HighScoreEntry(name, score));
+        if (highscores.Count > PlayerLimit)
+        {
+            highscores.RemoveAt(highscores.Count - 1);
+        }
+        
         Save();
         return true;
     }
@@ -28,16 +39,23 @@ public sealed class HighScore
     {
         if (!File.Exists(FilePath)) return; //Skippar om det är första gången
 
-        string[] lines = File.ReadAllLines(FilePath);
-        if (lines.Length >= 2 && int.TryParse(lines[1], out int savedScore))
+        foreach (string line in File.ReadAllLines(FilePath))
         {
-            Name = lines[0];
-            Score = savedScore;
+            string[] lines = line.Split(';');
+            if (lines.Length >= 2 && int.TryParse(lines[1], out int score))
+            {
+                highscores.Add(new HighScoreEntry(lines[0], score));
+            }
         }
     }
 
     private void Save()
     {
-        File.WriteAllLines(FilePath, new[] {Name, Score.ToString() });
+        List<string> lines = new List<string>();
+        foreach (HighScoreEntry highscore in highscores)
+        {
+            lines.Add($"{highscore.Name};{highscore.Score}");
+        }
+        File.WriteAllLines(FilePath, lines);
     }
 }

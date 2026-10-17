@@ -7,7 +7,8 @@ namespace Invaders;
 public enum GameState
 {
     MainMenu,
-    Game
+    Game,
+    HighScore
 }
 
 public sealed class Game
@@ -17,8 +18,20 @@ public sealed class Game
     private readonly AssetManager assets = new AssetManager();
     private readonly Text menuText = new Text();
     private readonly HighScore highScore = new HighScore();
+
+    private static readonly string[] menuOptions = {"Start Game", "High Score", "Quit Game" };
+    private const int StartGame = 0;
+    private const int HighScoreOption = 1;
+    private const int QuitGame = 2;
+    private int selected;
     
-    private GameState state = GameState.MainMenu;
+    private const float menuDelay = 0.2f;
+    private float menuInputTimer;
+        
+    
+    public bool QuitRequest { get; private set; }
+
+private GameState state = GameState.MainMenu;
 
     private string playerName = "";
     private Scene scene;
@@ -36,7 +49,19 @@ public sealed class Game
         switch (state)
         {
             case GameState.MainMenu:
-                
+                menuInputTimer -= dt;
+
+                if (menuInputTimer > 0) break;
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Up) && selected > 0)
+                {
+                    selected--;
+                    menuInputTimer = menuDelay;
+                }
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.Down) && selected < menuOptions.Length -1)
+                {
+                    selected++;
+                    menuInputTimer = menuDelay;
+                }
                 break;
             case GameState.Game:
                 scene.Update(dt);
@@ -45,8 +70,15 @@ public sealed class Game
                     deathTimer += dt;
                     if (deathTimer >= delay)
                     {
+                        highScore.AddHighScore(playerName, scene.Score);
                         state = GameState.MainMenu;
                     }
+                }
+                break;
+            case GameState.HighScore:
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                {
+                    state = GameState.MainMenu;
                 }
                 break;
         }
@@ -66,24 +98,38 @@ public sealed class Game
         {
             if (c == '\b')
             {
-                if (playerName.Length > 0)
+                if (playerName.Length > 0 && playerName.Length < 10)
                 {
                     playerName = playerName.Substring(0, playerName.Length - 1);
                 }
             }
-            else if (c == '\r')
+            else if (c == '\r' && playerName.Length < 10)
             {
-                if (playerName.Length > 0)
-                {
-                    Start();
-                }
+                SelectOption();
             }
-            else if ((char.IsLetterOrDigit(c) || c == ' '))
+            else if ((char.IsLetterOrDigit(c) || c == ' ') && playerName.Length < 10)
             {
                 playerName += c;
             }
         }
        
+    }
+
+    private void SelectOption()
+    {
+        if (selected == StartGame && playerName.Length > 0)
+        {
+            Start();
+        }
+        else if (selected == HighScoreOption)
+        {
+            state = GameState.HighScore;
+        }
+        else if (selected == QuitGame)
+        {
+            QuitRequest = true;
+        }
+        
     }
 
     public void Render(RenderTarget target)
@@ -93,13 +139,39 @@ public sealed class Game
             case GameState.MainMenu:
                 DrawMenu(target, "INVADERS", 250);
                 DrawMenu(target, $"Name: {playerName}", 320);
-                DrawMenu(target, playerName.Length > 0 ? "Press Enter to Play" : "Type your name", 380);
-                
-                DrawMenu(target, $"Current HighScore: {highScore.Name} {highScore.Score}", 480);
 
+                if (playerName.Length == 0)
+                {
+                    DrawMenu(target, "Type your name", 380);
+                }
+
+                for (int i = 0; i < menuOptions.Length; i++)
+                {
+                    menuText.FillColor = i == selected ? Color.Yellow : Color.White;
+                    DrawMenu(target, menuOptions[i], 420 + i * 50);
+                }
+
+                menuText.FillColor = Color.White;
                 break;
             case GameState.Game:
                 scene.Render(target);
+                break;
+            case GameState.HighScore:
+                DrawMenu(target, "!!!High Scores!!!", 50);
+
+                if (highScore.Highscores.Count == 0)
+                {
+                    DrawMenu(target, "No Score!", 375);
+                }
+
+                for (int i = 0; i < highScore.Highscores.Count; i++)
+                {
+                    HighScoreEntry entry = highScore.Highscores[i];
+                    DrawMenu(target, $"{i + 1}. {entry.Name} {entry.Score}", 120 + i * 50);
+                }
+                
+                
+                DrawMenu(target, "Press Escape to go back", 750);
                 break;
         }
     }

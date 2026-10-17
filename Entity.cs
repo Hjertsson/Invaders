@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 
 namespace Invaders;

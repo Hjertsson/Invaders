@@ -1,5 +1,4 @@
-﻿using SFML.Graphics;
-namespace Invaders;
+﻿namespace Invaders;
 
 public sealed class EnemyManager
 {

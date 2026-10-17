@@ -10,6 +10,8 @@ public sealed class Explosion : Entity
     private float timer;
     private Sound ExplosionSound;
 
+    private IntRect ExplosionEffect = new IntRect(580, 661, 48, 46);
+
     public Explosion(Vector2f position) : base("sheet")
     {
         Position = position;
@@ -17,8 +19,7 @@ public sealed class Explosion : Entity
 
     public override void Create(Scene scene)
     {
-        sprite.TextureRect = new IntRect(580, 661, 48, 46);
-        sprite.Origin = new Vector2f(24,23);
+        SetTextureRect(ExplosionEffect);
         ExplosionSound = new Sound(scene.Assets.LoadSound("8bit_bomb"));
         ExplosionSound.Volume = 5;
         ExplosionSound.Play();

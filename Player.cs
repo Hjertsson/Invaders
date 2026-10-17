@@ -1,8 +1,6 @@
-﻿using System.Security.AccessControl;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using SFML.Audio;
 
 namespace Invaders;
 
@@ -32,9 +30,7 @@ public sealed class Player : Ship
     public override void Create(Scene scene)
     {
         Position = new Vector2f(Program.SCREEN_WIDTH / 2f, Program.SCREEN_HEIGHT - 100);
-        //sprite.TextureRect = new IntRect(0, 941, 112, 75);
         SetTextureRect(PlayerShip);
-        //sprite.Origin = new Vector2f(sprite.TextureRect.Width /2f, sprite.TextureRect.Height / 2f);
         base.Create(scene);
         BulletSound.Volume = 20;
     }
