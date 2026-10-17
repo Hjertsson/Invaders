@@ -98,12 +98,12 @@ private GameState state = GameState.MainMenu;
         {
             if (c == '\b')
             {
-                if (playerName.Length > 0 && playerName.Length < 10)
+                if (playerName.Length > 0 )
                 {
                     playerName = playerName.Substring(0, playerName.Length - 1);
                 }
             }
-            else if (c == '\r' && playerName.Length < 10)
+            else if (c == '\r' )
             {
                 SelectOption();
             }

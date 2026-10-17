@@ -21,7 +21,7 @@ public sealed class Enemy : Ship
 
     public override void Create(Scene scene)
     {
-        sprite.Position = new Vector2f(new Random().Next(55, Program.SCREEN_WIDTH - 55), enemyShipWidth);
+        sprite.Position = new Vector2f(new Random().Next(55, Program.SCREEN_WIDTH - 55), - enemyShipWidth);
         SetTextureRect(EnemyShip);
         newPos = sprite.Position;
         base.Create(scene);
