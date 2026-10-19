@@ -16,7 +16,7 @@ public sealed class Enemy : Ship
     {
         HitBoxSize = new Vector2f(70, 60);
         ShootCooldown = 1.5f;
-        direction = new Vector2f(RandomDirection(), 1);
+        direction = new Vector2f(RandomDirection(), 1) / MathF.Sqrt(2.0f);
     }
 
     public override void Create(Scene scene)

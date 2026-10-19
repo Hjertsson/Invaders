@@ -89,7 +89,7 @@ private GameState state = GameState.MainMenu;
         state = GameState.Game;
     }
 
-    public void OnTextInput(string text)
+    public void TextInput(string text)
     {
         if (state != GameState.MainMenu) return; // Skippar att kolla inputs om spelaren inte är i menyn
 

@@ -18,7 +18,7 @@ class Program
                    new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
             window.Closed += (o, e) => window.Close();
-            window.TextEntered += (o, e) => game.OnTextInput(e.Unicode); //Anropar ett event för att skicka med den texten som skrivs
+            window.TextEntered += (o, e) => game.TextInput(e.Unicode); //Anropar ett event för att skicka med den texten som skrivs
             Clock clock = new Clock();
             while (window.IsOpen)
             {
