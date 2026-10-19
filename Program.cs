@@ -18,7 +18,7 @@ class Program
                    new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
             window.Closed += (o, e) => window.Close();
-            window.TextEntered += (o, e) => game.OnTextInput(e.Unicode);
+            window.TextEntered += (o, e) => game.OnTextInput(e.Unicode); //Anropar ett event för att skicka med den texten som skrivs
             Clock clock = new Clock();
             while (window.IsOpen)
             {
@@ -26,7 +26,7 @@ class Program
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f);
                 game.Update(dt);
-                if (game.QuitRequest)
+                if (game.QuitRequest) //Om Quit är true så stängs spelet av
                 {
                     window.Close();
                     break;

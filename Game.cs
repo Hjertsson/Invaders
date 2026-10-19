@@ -21,15 +21,14 @@ public sealed class Game
 
     private static readonly string[] menuOptions = {"Start Game", "High Score", "Quit Game" };
     private const int StartGame = 0;
-    private const int HighScoreOption = 1;
+    private const int HighScoreOption = 1; //Sätter ett int värde på alla 3 meny alternativ
     private const int QuitGame = 2;
-    private int selected;
+    private int selected; //0 som default
     
-    private const float menuDelay = 0.2f;
+    private const float MenuDelay = 0.2f;
     private float menuInputTimer;
-        
     
-    public bool QuitRequest { get; private set; }
+    public bool QuitRequest { get; private set; } //Gör så att program kan få tillgång till denna infon. Värdet kan enbart ändras i Game klassen
 
 private GameState state = GameState.MainMenu;
 
@@ -49,18 +48,18 @@ private GameState state = GameState.MainMenu;
         switch (state)
         {
             case GameState.MainMenu:
-                menuInputTimer -= dt;
+                menuInputTimer -= dt; // Behövs för att kunna stega igenom menyn och inte hoppa över mitten
 
                 if (menuInputTimer > 0) break;
-                if (Keyboard.IsKeyPressed(Keyboard.Key.Up) && selected > 0)
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Up) && selected > 0) //Om spelaren klickar pil upp, och selected är högre än 0
                 {
-                    selected--;
-                    menuInputTimer = menuDelay;
+                    selected--; //Minskar selected
+                    menuInputTimer = MenuDelay; //sätter delay på nästa upp/ner input
                 }
-                else if (Keyboard.IsKeyPressed(Keyboard.Key.Down) && selected < menuOptions.Length -1)
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.Down) && selected < menuOptions.Length -1) //Om spelaren klickar pil ner, och selected är lägre än 0
                 {
                     selected++;
-                    menuInputTimer = menuDelay;
+                    menuInputTimer = MenuDelay;
                 }
                 break;
             case GameState.Game:
@@ -68,9 +67,9 @@ private GameState state = GameState.MainMenu;
                 if (scene.GameOver)
                 {
                     deathTimer += dt;
-                    if (deathTimer >= delay)
+                    if (deathTimer >= delay) //Gör så att spelar inte direkt hamnar i menyn
                     {
-                        highScore.AddHighScore(playerName, scene.Score);
+                        highScore.AddHighScore(playerName, scene.Score); //Skickar in spelaren namn och vad för score spelaren hade. Score hämtas in från scene
                         state = GameState.MainMenu;
                     }
                 }
@@ -85,7 +84,7 @@ private GameState state = GameState.MainMenu;
     }
     private void Start()
     {
-        scene = new Scene(assets);
+        scene = new Scene(assets); //Skapar ett nytt Scene objekt
         deathTimer = 0;
         state = GameState.Game;
     }
@@ -94,22 +93,22 @@ private GameState state = GameState.MainMenu;
     {
         if (state != GameState.MainMenu) return; // Skippar att kolla inputs om spelaren inte är i menyn
 
-        foreach (char c in text)
+        foreach (char c in text) //Stegar igenom hela strängen som skickats in
         {
-            if (c == '\b')
+            if(Keyboard.IsKeyPressed(Keyboard.Key.Backspace))
             {
-                if (playerName.Length > 0 )
+                if (playerName.Length > 0 ) //Om spelarens namn är längre än 0
                 {
-                    playerName = playerName.Substring(0, playerName.Length - 1);
+                    playerName = playerName.Substring(0, playerName.Length - 1); //Tar bort den sista bokstaven/siffran
                 }
             }
-            else if (c == '\r' )
+            else if(Keyboard.IsKeyPressed(Keyboard.Key.Enter))
             {
-                SelectOption();
+                SelectOption(); //Om spelaren klickar på enter så anropas SelectOption
             }
-            else if ((char.IsLetterOrDigit(c) || c == ' ') && playerName.Length < 10)
+            else if ((char.IsLetterOrDigit(c) || c == ' ') && playerName.Length < 10) // Kollar om "karaktären" som skickats in är en bokstav eller ett nummer eller tom, och om playerName redan är 10 lång
             {
-                playerName += c;
+                playerName += c; //Lägger till "karaktären"
             }
         }
        
@@ -117,15 +116,15 @@ private GameState state = GameState.MainMenu;
 
     private void SelectOption()
     {
-        if (selected == StartGame && playerName.Length > 0)
+        if (selected == StartGame && playerName.Length > 0) // kollar om selected är 0 (StartGame variabeln) och namnet är längre än 0
         {
-            Start();
+            Start(); //Anropar Start
         }
-        else if (selected == HighScoreOption)
+        else if (selected == HighScoreOption) //kollar om selected är 1 (HighScoreOption variabeln)
         {
             state = GameState.HighScore;
         }
-        else if (selected == QuitGame)
+        else if (selected == QuitGame) //kollar om selected är 2 (QuitGame variabeln)
         {
             QuitRequest = true;
         }
@@ -134,7 +133,7 @@ private GameState state = GameState.MainMenu;
 
     public void Render(RenderTarget target)
     {
-        switch (state)
+        switch (state) //Ett switch case för att hantera vad som ska renderas beroende på vilket state som Game är i
         {
             case GameState.MainMenu:
                 DrawMenu(target, "INVADERS", 250);
@@ -145,9 +144,9 @@ private GameState state = GameState.MainMenu;
                     DrawMenu(target, "Type your name", 380);
                 }
 
-                for (int i = 0; i < menuOptions.Length; i++)
+                for (int i = 0; i < menuOptions.Length; i++) //Denna for loop stegar igenom menuOptions listan och kollar om det är Selected, isåfall ändras fill color till gul, annars vit
                 {
-                    menuText.FillColor = i == selected ? Color.Yellow : Color.White;
+                    menuText.FillColor = i == selected ? Color.Yellow : Color.White; 
                     DrawMenu(target, menuOptions[i], 420 + i * 50);
                 }
 
@@ -164,7 +163,7 @@ private GameState state = GameState.MainMenu;
                     DrawMenu(target, "No Score!", 375);
                 }
 
-                for (int i = 0; i < highScore.Highscores.Count; i++)
+                for (int i = 0; i < highScore.Highscores.Count; i++) //Ritar ut alla sparade highscores
                 {
                     HighScoreEntry entry = highScore.Highscores[i];
                     DrawMenu(target, $"{i + 1}. {entry.Name} {entry.Score}", 120 + i * 50);

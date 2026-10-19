@@ -11,8 +11,8 @@ public sealed class Bullet : Entity
 
     private const int borderOffset = 50;
 
-    private static readonly IntRect PlayerBullet = new IntRect(856, 421, 9, 54);
-    private static readonly IntRect EnemyBullet = new IntRect(858, 230, 9, 54);
+    private static readonly IntRect PlayerBulletTexture = new IntRect(856, 421, 9, 54);
+    private static readonly IntRect EnemyBulletTexture = new IntRect(858, 230, 9, 54);
 
     private readonly float rotationRight = 135f;
     private readonly float rotationLeft = 225f;
@@ -27,10 +27,10 @@ public sealed class Bullet : Entity
         Position = spawnPosition;
     }
 
-    public override void Create(Scene scene) //Skapar bullet, kollar först om entity som skickades med i konstruktorn är en player
+    public override void Create(Scene scene) //Skapar bullet, kollar först om entity som skickades med i konstruktorn är en player, annars skapar den en enemyBullet
     {
         
-        SetTextureRect(currentEntity is Player ? PlayerBullet : EnemyBullet);
+        SetTextureRect(currentEntity is Player ? PlayerBulletTexture : EnemyBulletTexture);
         
         if (direction.Y > 0 && direction.X > 0) // Kollar om direction X är mer eller mindre än 0, och sätter rotation för Spriten för att den ska peka rätt
         {

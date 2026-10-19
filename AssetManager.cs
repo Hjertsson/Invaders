@@ -10,7 +10,7 @@ public sealed class AssetManager
     private readonly Dictionary<string, Font> fonts;
     private readonly Dictionary<string, SoundBuffer> sounds;
 
-    public AssetManager()
+    public AssetManager() //Denna klassen är samma som i pacman inlämningen
     {
         textures = new Dictionary<string, Texture>();
         fonts = new Dictionary<string, Font>();

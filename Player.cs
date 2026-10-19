@@ -6,7 +6,7 @@ namespace Invaders;
 
 public sealed class Player : Ship
 {
-    private IntRect PlayerShip = new IntRect(0, 941, 112, 75);
+    private IntRect PlayerShipTexture = new IntRect(0, 941, 112, 75);
     
     private static readonly Vector2f GunLeft = new Vector2f(-32, -10);
     private static readonly Vector2f GunRight = new Vector2f(32, -10);
@@ -17,6 +17,7 @@ public sealed class Player : Ship
     private const int EnemyShipWidth = 50;
     
     private const int damage = 1;
+    
     
     private float scoreTimer;
 
@@ -30,12 +31,12 @@ public sealed class Player : Ship
     public override void Create(Scene scene)
     {
         Position = new Vector2f(Program.SCREEN_WIDTH / 2f, Program.SCREEN_HEIGHT - 100);
-        SetTextureRect(PlayerShip);
+        SetTextureRect(PlayerShipTexture);
         base.Create(scene);
         BulletSound.Volume = 20;
     }
 
-    private bool BorderCheck(Vector2f position)
+    private bool BorderCheck(Vector2f position) //Säkerställer att spelaren inte kan åka utanför någon kant på skärmen
     {
         bool up = position.Y < EnemyShipWidth + 10;
         bool down = position.Y > Program.SCREEN_HEIGHT - EnemyShipWidth + 10;
@@ -75,18 +76,18 @@ public sealed class Player : Ship
 
     protected override void Shoot(Scene scene, Vector2f direction)
     {
-        scene.Spawn(new Bullet(this, direction, Position + GunLeft));
+        scene.Spawn(new Bullet(this, direction, Position + GunLeft)); //Skapar 2 skott, och med hjälp av gunlefy/right, på olika delar av skeppet
         scene.Spawn(new Bullet(this, direction, Position + GunRight));
     }
 
     public override void TakeDamage(Scene scene, int amount)
     {
-        if(immortal) return;
+        if(immortal) return; //Kollar om spelaren är odödlig
         
-        scene.Events.PublishLoseHealth(amount);
-        immortal = true;
-        immortalTimer = 0;
-        base.TakeDamage(scene, amount);
+        scene.Events.PublishLoseHealth(amount); //Anropar eventet för looseHealth, vilket gör så att GUI's kopia minskar
+        immortal = true; //Sätter spelaren till immortal
+        immortalTimer = 0; //Återställer immortal timern
+        base.TakeDamage(scene, amount); //Här inne minska den "riktiga" health variabeln
     }
 
     protected override void CollideWith(Scene scene, Entity other)

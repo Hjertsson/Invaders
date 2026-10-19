@@ -10,7 +10,7 @@ public sealed class Enemy : Ship
     private Vector2f newPos;
     private const int enemyShipWidth = 70;
 
-    private IntRect EnemyShip = new IntRect(423, 728, 93, 84);
+    private IntRect EnemyShipTexture = new IntRect(423, 728, 93, 84);
     
     public Enemy() : base(1)
     {
@@ -22,7 +22,7 @@ public sealed class Enemy : Ship
     public override void Create(Scene scene)
     {
         sprite.Position = new Vector2f(new Random().Next(55, Program.SCREEN_WIDTH - 55), - enemyShipWidth);
-        SetTextureRect(EnemyShip);
+        SetTextureRect(EnemyShipTexture);
         newPos = sprite.Position;
         base.Create(scene);
         BulletSound.Volume = 10;
@@ -30,8 +30,8 @@ public sealed class Enemy : Ship
 
     protected override void Shoot(Scene scene, Vector2f direction)
     {
-        base.Shoot(scene, direction);
-        ShootCooldown = 1f + (float)Random.Shared.NextDouble() * 2f;
+        base.Shoot(scene, direction); //anropar Shoot och skickar vidare detta enemy objektets direction
+        ShootCooldown = 1f + new Random().Next(0, 2); //Slumpar hur länge enemy väntar på att skjuta, men aldrig mindre än sekund
     }
 
     protected override void Move(float dt)
@@ -54,14 +54,14 @@ public sealed class Enemy : Ship
         sprite.Position = newPos;
     }
 
-    private void Reflect(Vector2f normal)
+    private void Reflect(Vector2f normal) //Samma som i breakout tutorialen
     {
         direction -= normal * (2 * (
             direction.X * normal.X +
             direction.Y * normal.Y));
     }
 
-    public static int RandomDirection()
+    public static int RandomDirection() //Slumpar vilken håll enemy börjar åka mot
     {
         int angle = new Random().Next(0, 2);
         if (angle == 0)
@@ -71,7 +71,7 @@ public sealed class Enemy : Ship
 
         return 1;
     }
-    private void ShipFacing()
+    private void ShipFacing() //Ser till så att enemy texturen pekar åt rätt håll
     {
         if (direction.X < 0)
         {

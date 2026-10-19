@@ -2,11 +2,10 @@
 
 public delegate void ValueChangedEvent(Scene scene, int value);
 
-public sealed class EventManager
+public sealed class EventManager //Denna klassen är samma som skrevs i Pacman inlämningen
 {
     private int scoreGain;
     private int healthLost;
-
 
     public event ValueChangedEvent OnGainScore;
     public event ValueChangedEvent OnLoseHealth;

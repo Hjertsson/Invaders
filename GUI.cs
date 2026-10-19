@@ -21,7 +21,6 @@ public class GUI
         scoreText = new Text();
         maxHealth = 3;
         currentHealth = maxHealth;
-        
     }
 
     public void Create(Scene scene)
@@ -54,11 +53,11 @@ public class GUI
         GUISprite.TextureRect = HealthPng;
         GUISprite.Position = new Vector2f(10, 10);
 
-        for (int i = 0; i < maxHealth; i++)
+        for (int i = 0; i < maxHealth; i++) //Samma health funktion som i Pacman
         {
             GUISprite.Color = i < currentHealth
                 ? Color.White
-                : new Color(60, 60, 60, 140);
+                : new Color(60, 60, 60, 140); //Iställer för att ta bort health texturen så görs den grå och mer genomskinlig
                 
             target.Draw(GUISprite);
             GUISprite.Position += new Vector2f(40, 0);
