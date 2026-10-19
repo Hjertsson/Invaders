@@ -37,7 +37,7 @@ public sealed class Scene
         entity.Create(this);
     }
     
-    public IEnumerable<Entity> FindIntersects(FloatRect bounds)
+    public IEnumerable<Entity> FindIntersects(FloatRect bounds) //Samma FindIntersects som vi använt under laborationerna
     {
         int lastEntity = entities.Count - 1;
 
@@ -52,7 +52,7 @@ public sealed class Scene
         }
     }
 
-    public void Update(float dt)
+    public void Update(float dt) //Väldigt lika update som i laborationerna
     {
         for (int i = entities.Count - 1; i >= 0 ; i--)
         {
@@ -71,10 +71,10 @@ public sealed class Scene
         Events.CheckEvent(this);
     }
     
-    public void Render(RenderTarget target)
+    public void Render(RenderTarget target) 
     {
         target.Draw(backgroundSprite);
-        for (int i = 0; i < entities.Count; i++)
+        for (int i = 0; i < entities.Count; i++) //Samma entities loop som i laborationerna
         {
             entities[i].Render(target);
         }
