@@ -62,7 +62,7 @@ public sealed class Enemy : Ship
             direction.Y * normal.Y));
     }
 
-    public static int RandomDirection() //Slumpar vilken håll enemy börjar åka mot
+    private static int RandomDirection() //Slumpar vilken håll enemy börjar åka mot
     {
         int angle = new Random().Next(0, 2);
         if (angle == 0)

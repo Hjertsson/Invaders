@@ -14,7 +14,7 @@ public sealed class Player : Ship
     private static readonly Color DefaultColor = Color.White;
     private static readonly Color ImmortalColor = new Color(60, 60, 60, 140);
     
-    private const int EnemyShipWidth = 50;
+    private const int ShipWidth = 50;
     
     private const int damage = 1;
     
@@ -38,10 +38,10 @@ public sealed class Player : Ship
 
     private bool BorderCheck(Vector2f position) //Säkerställer att spelaren inte kan åka utanför någon kant på skärmen
     {
-        bool up = position.Y < EnemyShipWidth + 10;
-        bool down = position.Y > Program.SCREEN_HEIGHT - EnemyShipWidth + 10;
-        bool right = position.X > Program.SCREEN_WIDTH -EnemyShipWidth;
-        bool left = position.X < 0 + EnemyShipWidth;
+        bool up = position.Y < ShipWidth + 10;
+        bool down = position.Y > Program.SCREEN_HEIGHT - ShipWidth + 10;
+        bool right = position.X > Program.SCREEN_WIDTH -ShipWidth;
+        bool left = position.X < 0 + ShipWidth;
         return up || down || right || left;
     }
 

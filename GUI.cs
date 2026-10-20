@@ -14,7 +14,7 @@ public class GUI
 
     public int Score => currentScore; //Ger Scene access till Score
     
-    private static readonly IntRect HealthPng = new IntRect(502, 991, 36, 26);
+    private static readonly IntRect HealthTexture = new IntRect(502, 991, 36, 26);
     
     public GUI()
     {
@@ -50,7 +50,7 @@ public class GUI
 
     public void Render(RenderTarget target)
     {
-        GUISprite.TextureRect = HealthPng;
+        GUISprite.TextureRect = HealthTexture;
         GUISprite.Position = new Vector2f(10, 10);
 
         for (int i = 0; i < maxHealth; i++) //Samma health funktion som i Pacman

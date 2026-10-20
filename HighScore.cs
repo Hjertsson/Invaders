@@ -7,7 +7,7 @@ public sealed class HighScore
     private const int PlayerLimit = 5;
 
     private readonly List<HighScoreEntry> highscores = new List<HighScoreEntry>();
-    public List<HighScoreEntry> Highscores => highscores;
+    public List<HighScoreEntry> Highscores => highscores; //Highscores pekar på highscores för att Game ska få access
     
 
     public HighScore()
