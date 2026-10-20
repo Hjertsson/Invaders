@@ -23,10 +23,10 @@ public sealed class HighScore
             index++;
         }
 
-        if (index >= PlayerLimit) return false; //Om index är mer än PlayerLimit(10), dvs score har inte varit högre än något av de 10 sparade objekten så returnera false
+        if (index >= PlayerLimit) return false; //Om index är mer än PlayerLimit(5), dvs score har inte varit högre än något av de 5 sparade objekten så returnera false
         
         highscores.Insert(index, new HighScoreEntry(name, score)); //Lägger in det nya highscore entryn på index platsen
-        if (highscores.Count > PlayerLimit) //Om detta gjorde så att det nu finns fler än 10 sparade entries, ta bort den sista i listan
+        if (highscores.Count > PlayerLimit) //Om detta gjorde så att det nu finns fler än 5 sparade entries, ta bort den sista i listan
         {
             highscores.RemoveAt(highscores.Count - 1);
         }
@@ -40,7 +40,7 @@ public sealed class HighScore
         if (!File.Exists(FilePath)) return; //Skippar om det är första gången
 
         string[] lines = File.ReadAllLines(FilePath); //Läser igenoim alla rader som finns i filen och skapar en array av dom
-        for (int i = 0; i < lines.Length; i += 2) //Eftersom det sparas på 2 rader i dokumentet som hoppar det 2 platser, 
+        for (int i = 0; i + 1 < lines.Length; i += 2) //Eftersom det sparas på 2 rader i dokumentet som hoppar det 2 platser, 
         {
             if (int.TryParse(lines[i + 1], out int score)) // i+ 1 blir då score
             {
